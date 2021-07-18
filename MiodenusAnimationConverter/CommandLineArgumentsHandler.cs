@@ -269,7 +269,7 @@ namespace MiodenusAnimationConverter
             {
                 SetValueOfFps(argumentsList);
             }
-            else if (argumentsList[0] == InputKeys[2]||argumentsList[1]==InputKeys[3])
+            else if (argumentsList[0] == InputKeys[2]||argumentsList[0]==InputKeys[3])
             {
                 SetValueOfBitrate(argumentsList);
             }
@@ -288,6 +288,40 @@ namespace MiodenusAnimationConverter
             else if (argumentsList[0] == InputKeys[11] || argumentsList[0] == InputKeys[12])
             {
                 SetValueOfPathsToModelFiles(argumentsList);
+            }
+        }
+
+        private void CheckObligatedArguments()
+        {
+            if (ModelFiles.Count < 1 || AnimationFile == "" || VideoFile == "")
+            {
+                throw new WrongCommandLineArgumentsException($"All {MinimumAmountOfArguments} obligated arguments should be used: path to animation file (-a), path to model (or models) (-m) and path to output video (-o)");
+            }
+        }
+
+        private void SetAll(List<string> argumentsList)
+        {
+            if (argumentsList.Count < MinimumAmountOfArguments)
+            {
+                throw new WrongCommandLineArgumentsException($"At least {MinimumAmountOfArguments} command line arguments should be used");
+            }
+            else
+            {
+
+                for ( ; argumentsList.Count!=0; )
+                {
+                    CheckIfInfoRequired(argumentsList);
+
+                    if (argumentsList.Count < 2)
+                    {
+                        throw new WrongCommandLineArgumentsException($"Argument {argumentsList[0]} should not be empty"); 
+                    }
+                    else
+                    {
+                        SetAllValues(argumentsList);
+                    }
+                }
+                CheckObligatedArguments();
             }
         }
         
@@ -309,34 +343,10 @@ namespace MiodenusAnimationConverter
         
         public CommandLineArgumentsHandler(string[] arguments)
         {
-            var argumentsList = new List<string>(arguments);
+            string[] args = {"-m", "hkhjkhk", "-o", "hjhjh", "-a", "ghjghgj", "-b", "8"};
+            var argumentsList = new List<string>(args);
 
-            if (argumentsList.Count < MinimumAmountOfArguments)
-            {
-                throw new WrongCommandLineArgumentsException($"At least {MinimumAmountOfArguments} command line arguments should be used");
-            }
-            else
-            {
-
-                for ( ; argumentsList.Count!=0; )
-                {
-                    CheckIfInfoRequired(argumentsList);
-
-                        if (argumentsList.Count < 2)
-                        {
-                            throw new WrongCommandLineArgumentsException($"Argument {argumentsList[0]} should not be empty"); 
-                        }
-                        else
-                        {
-                            SetAllValues(argumentsList);
-                        }
-                }
-
-                if (ModelFiles.Count < 1 || AnimationFile == "" || VideoFile == "")
-                {
-                    throw new WrongCommandLineArgumentsException($"All {MinimumAmountOfArguments} required arguments should be used: path to animation file (-a), path to model (or models) (-m) and path to output video (-o)");
-                }
-            }
+            SetAll(argumentsList);
         }
     }
 }
