@@ -343,8 +343,7 @@ namespace MiodenusAnimationConverter
         
         public CommandLineArgumentsHandler(string[] arguments)
         {
-            string[] args = {"-m", "hkhjkhk", "-o", "hjhjh", "-a", "ghjghgj", "-b", "8"};
-            var argumentsList = new List<string>(args);
+            var argumentsList = new List<string>(arguments);
 
             SetAll(argumentsList);
         }
